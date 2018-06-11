@@ -99,16 +99,16 @@ public class CelularController {
 	public String listar() {
 		try {
 
-			List<Celular> listaPessoa = getCelularService().listar();
+			List<Celular> listaCelular = getCelularService().listar();
 
-			if (listaPessoa == null || listaPessoa.size() == 0) {
+			if (listaCelular == null || listaCelular.size() == 0) {
 				FacesMessage message = new FacesMessage("Nenhum registro encontrado.");
 				this.getFacesContext().addMessage("formulario", message);
 			}
 
 			// preeche a lista de pessoas da tela
 			listaCelularBean = new ArrayList<CelularBean>();
-			for (Celular celular : listaPessoa) {
+			for (Celular celular : listaCelular) {
 				CelularBean celularBean = new CelularBean();
 				celularBean.setId_cel(celular.getId_cel());
 				celularBean.setMarca(celular.getMarca());

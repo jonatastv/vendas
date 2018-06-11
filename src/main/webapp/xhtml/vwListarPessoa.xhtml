@@ -14,27 +14,27 @@
 				<h:graphicImage url="../../images/agenda.jpg"></h:graphicImage>
 				<input type="hidden" id="idPessoa" name="idPessoa"/>
 				<br/>
-				<h:dataTable border="1" styleClass="sample" id="pessoas" value="#{pessoaController.listaPessoaBean}" var="pessoa">
+				<h:dataTable border="1" styleClass="sample" id="pessoas" value="#{celularController.listaCelularBean}" var="pessoa">
 					<h:column>
 						<f:facet name="header">
 							<h:outputLabel value="Nome" />
 						</f:facet>
-						<h:inputHidden value="#{pessoa.idPessoa}" />
-						<h:outputLabel value="#{pessoa.dsNome}" />
+						<h:inputHidden value="#{celular.id_cel}" />
+						<h:outputLabel value="#{celular.nome}" />
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputLabel value="Idade" />
 						</f:facet>
-						<h:outputLabel value="#{pessoa.vlIdade}" />
+					<!-- 	<h:outputLabel value="#{pessoa.vlIdade}" /> -->
 					</h:column>
 					<h:column>
 						<f:facet name="header">
 							<h:outputLabel value="" />
 						</f:facet>
-						<h:message for="#{pessoaController}"/>
-						<h:selectOneRadio id="selecionado" value="#{pessoaController.pessoaBean.idPessoa}" onclick="selecionarItem('idPessoa',this);">
-							<f:selectItem itemValue="#{pessoa.idPessoa}"/>
+						<h:message for="#{celularController}"/>
+						<h:selectOneRadio id="selecionado" value="#{celularController.celularBean.id_cel}" onclick="selecionarItem('id_cel',this);">
+							<f:selectItem itemValue="#{celular.id_cel}"/>
 						</h:selectOneRadio>
 					</h:column>
 				</h:dataTable>
