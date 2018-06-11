@@ -63,7 +63,7 @@ import javax.persistence.Table;
 		@OneToMany(mappedBy = "servico", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 		private List<Servico> listaServico;
 
-		public List<Servico> getListaTelefone() {
+		public List<Servico> getListaServico() {
 			return listaServico;
 		}
 		
@@ -76,9 +76,6 @@ import javax.persistence.Table;
 		}
 		
 		
-		public List<Servico> getListaServico() {
-			return listaServico;
-		}
 
 		public void setListaServico(List<Servico> listaServico) {
 			this.listaServico = listaServico;

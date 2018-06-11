@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 
 	<!-- Configuracoes do hibernate para o projeto AGENDA -->
-	<persistence-unit name="agenda">
+	<persistence-unit name="celular">
 
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 

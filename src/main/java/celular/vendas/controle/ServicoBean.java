@@ -1,5 +1,7 @@
 package celular.vendas.controle;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,32 +13,46 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServicoBean {
 
-	private Integer idTelefone;
-	private String dsNumero;
-	private String clTipo;
-
-	public Integer getIdTelefone() {
-		return idTelefone;
+	private Integer idservico;
+	private String descricao;
+	private float valor;
+	private Date dtabertura;
+	private Date dtentrega;
+	
+	
+	
+	
+	public Integer getIdservico() {
+		return idservico;
 	}
-
-	public void setIdTelefone(Integer idTelefone) {
-		this.idTelefone = idTelefone;
+	public void setIdservico(Integer idservico) {
+		this.idservico = idservico;
 	}
-
-	public String getDsNumero() {
-		return dsNumero;
+	public String getDescricao() {
+		return descricao;
 	}
-
-	public void setDsNumero(String dsNumero) {
-		this.dsNumero = dsNumero;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
-
-	public String getClTipo() {
-		return clTipo;
+	public float getValor() {
+		return valor;
 	}
-
-	public void setClTipo(String clTipo) {
-		this.clTipo = clTipo;
+	public void setValor(float valor) {
+		this.valor = valor;
 	}
+	public Date getDtabertura() {
+		return dtabertura;
+	}
+	public void setDtabertura(Date dtabertura) {
+		this.dtabertura = dtabertura;
+	}
+	public Date getDtentrega() {
+		return dtentrega;
+	}
+	public void setDtentrega(Date dtentrega) {
+		this.dtentrega = dtentrega;
+	}
+	
+	
 
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+
+
 /**
  * Classe que representa o formulario web de Pessoa
  * 
@@ -13,41 +15,40 @@ import org.springframework.stereotype.Component;
 @Component
 public class CelularBean {
 
-	private Integer idPessoa;
-	private String dsNome;
-	private Integer vlIdade;
-	private List<ServicoBean> listaTelefone;
-
-	public Integer getIdPessoa() {
-		return idPessoa;
+	private Integer id_cel;
+	private String nome;
+	private String marca;
+	private List<ServicoBean> listaServico;
+	
+	
+	public Integer getId_cel() {
+		return id_cel;
 	}
-
-	public void setIdPessoa(Integer idPessoa) {
-		this.idPessoa = idPessoa;
+	public void setId_cel(Integer id_cel) {
+		this.id_cel = id_cel;
 	}
-
-	public String getDsNome() {
-		return dsNome;
+	public String getNome() {
+		return nome;
 	}
-
-	public void setDsNome(String dsNome) {
-		this.dsNome = dsNome;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
-
-	public List<ServicoBean> getListaTelefone() {
-		return listaTelefone;
+	public String getMarca() {
+		return marca;
 	}
-
-	public void setListaTelefone(List<ServicoBean> listaTelefone) {
-		this.listaTelefone = listaTelefone;
+	public void setMarca(String marca) {
+		this.marca = marca;
 	}
-
-	public void setVlIdade(Integer vlIdade) {
-		this.vlIdade = vlIdade;
+	public List<ServicoBean> getListaServico() {
+		return listaServico;
 	}
-
-	public Integer getVlIdade() {
-		return vlIdade;
+	public void setListaServico(List<ServicoBean> listaServico) {
+		this.listaServico = listaServico;
 	}
+	
+	
+	
+	
+	
 
 }

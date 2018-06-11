@@ -26,7 +26,7 @@ import celular.vendas.util.AgendaException;
  * @author Gilcimar
  *
  */
-@ManagedBean(name = "pessoaController")
+@ManagedBean(name = "celularController")
 @RequestScoped
 @Controller
 public class CelularController {
@@ -36,15 +36,15 @@ public class CelularController {
 	@Autowired
 	private List<CelularBean> listaCelularBean;
 	@Autowired
-	private PessoaService pessoaService;
+	private CelularService celularService;
 	@Autowired
-	private TelefoneBean telefoneBean;
+	private ServicoBean servicoBean;
 
 	/**
 	 * Construtor da classe de pessoa
 	 */
 	@SuppressWarnings("unchecked")
-	public PessoaController() {
+	public CelularController() {
 		celularBean = new CelularBean();
 	}
 
@@ -59,21 +59,28 @@ public class CelularController {
 			Celular celular = new Celular();
 
 			// preenche os dados da tela no objeto persistente
-			celular.setId_cel(celularBean.getIdPessoa());
-			celular.setNome(celularBean.getDsNome());
-			celular.setMarca(celularBean.getVlIdade().toString());
+			celular.setId_cel(celularBean.getId_cel());
+			celular.setNome(celularBean.getNome());
+			celular.setMarca(celularBean.getMarca());
 
 			// preeche a lista de telefones da tela na lista de telefones persistente
-			pessoa.setListaTelefone(new ArrayList<Telefone>());
-			for (TelefoneBean telefoneBean : celularBean.getListaTelefone()) {
-				Telefone telefone = new Telefone();
-				telefone.setClTipo(telefoneBean.getClTipo());
-				telefone.setDsNumero(telefoneBean.getDsNumero());
+			celular.setListaServico(new ArrayList<Servico>()); 
+			for (ServicoBean servicoBean : celularBean.getListaServico()) {
+				Servico servico = new Servico();
+				servico.setDescricao(servicoBean.getDescricao());
+				servico.setIdservico(servicoBean.getIdservico());
+				servico.setValor(servicoBean.getValor());
+				servico.setDtabertura(servico.getDtabertura());
+				servico.setDtentrega(servicoBean.getDtentrega());
+				
+			/*	telefone.setClTipo(servicoBean.getClTipo());
+				telefone.setDsNumero(servicoBean.getDsNumero());
 				telefone.setPessoa(pessoa);
 				pessoa.getListaTelefone().add(telefone);
+			*/	
 			}
 
-			getPessoaService().incluir(pessoa);
+			getCelularService().incluir(celular);
 
 			return "sucesso";
 		} catch (Exception e) {
@@ -92,7 +99,7 @@ public class CelularController {
 	public String listar() {
 		try {
 
-			List<Pessoa> listaPessoa = getPessoaService().listar();
+			List<Celular> listaPessoa = getCelularService().listar();
 
 			if (listaPessoa == null || listaPessoa.size() == 0) {
 				FacesMessage message = new FacesMessage("Nenhum registro encontrado.");
@@ -101,14 +108,20 @@ public class CelularController {
 
 			// preeche a lista de pessoas da tela
 			listaCelularBean = new ArrayList<CelularBean>();
-			for (Pessoa pessoa : listaPessoa) {
+			for (Celular celular : listaPessoa) {
 				CelularBean celularBean = new CelularBean();
-				celularBean.setIdPessoa(pessoa.getIdPessoa());
+				celularBean.setId_cel(celular.getId_cel());
+				celularBean.setMarca(celular.getMarca());
+				celularBean.setNome(celular.getNome());
+				listaCelularBean.add(celularBean);
+			/*	celularBean.setIdPessoa(pessoa.getIdPessoa());
 				celularBean.setDsNome(pessoa.getDsNome());
 				celularBean.setVlIdade((pessoa.getVlIdade() != null && !"".equals(pessoa.getVlIdade()))
 						? Integer.parseInt(pessoa.getVlIdade())
 						: 0);
 				listaCelularBean.add(celularBean);
+			*/
+			
 			}
 
 			return "listar";
@@ -130,32 +143,45 @@ public class CelularController {
 	public String consultar() {
 		try {
 
-			String idPessoa = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
-					.get("idPessoa");
+			String id_cel = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap()
+					.get("id_cel");
 
-			Pessoa pessoa = getPessoaService().consultar(Integer.parseInt(idPessoa));
+			Celular celular = getCelularService().consultar(Integer.parseInt(id_cel));
 
-			if (pessoa == null || pessoa.getIdPessoa() == null) {
+			if (celular == null || celular.getId_cel() == null) {
 				FacesMessage message = new FacesMessage("Nenhum registro encontrado.");
 				this.getFacesContext().addMessage("formulario", message);
 				return "listar";
 			}
 
 			// preenche os dados do bean da tela
-			celularBean.setIdPessoa(pessoa.getIdPessoa());
+			celularBean.setId_cel(celular.getId_cel());
+			celularBean.setMarca(celular.getMarca());
+			celularBean.setNome(celular.getNome());
+			
+		/*	celularBean.setIdPessoa(pessoa.getIdPessoa());
 			celularBean.setDsNome(pessoa.getDsNome());
 			celularBean.setVlIdade((pessoa.getVlIdade() != null && !"".equals(pessoa.getVlIdade()))
 					? Integer.parseInt(pessoa.getVlIdade())
 					: 0);
+			*/
+			
 
 			// preeche a lista de telefones da tela
-			CelularBean.setListaTelefone(new ArrayList<TelefoneBean>());
-			for (Telefone telefone : pessoa.getListaTelefone()) {
-				TelefoneBean telefoneBean = new TelefoneBean();
-				telefoneBean.setIdTelefone(telefone.getIdTelefone());
-				telefoneBean.setClTipo(telefone.getClTipo());
-				telefoneBean.setDsNumero(telefone.getDsNumero());
-				celularBean.getListaTelefone().add(telefoneBean);
+			celularBean.setListaServico(new ArrayList<ServicoBean>());
+			for (Servico servico: celular.getListaServico()) {
+				ServicoBean servicoBean = new ServicoBean();
+				servicoBean.setIdservico(servico.getIdservico());
+				servicoBean.setDescricao(servico.getDescricao());
+				servicoBean.setValor(servico.getValor());
+				servicoBean.setDtabertura(servico.getDtabertura());
+				servicoBean.setDtentrega(servico.getDtentrega());
+				
+			/*	servicoBean.setIdTelefone(telefone.getIdTelefone());
+				servicoBean.setClTipo(telefone.getClTipo());
+				servicoBean.setDsNumero(telefone.getDsNumero());
+				celularBean.getListaTelefone().add(servicoBean);
+			*/
 			}
 
 			return "editar";
@@ -176,9 +202,9 @@ public class CelularController {
 		try {
 
 			celularBean = new CelularBean();
-			celularBean.setListaTelefone(new ArrayList<TelefoneBean>());
+			celularBean.setListaServico(new ArrayList<ServicoBean>());
 
-			this.setSession("telefones", celularBean.getListaTelefone());
+			this.setSession("servicos", celularBean.getListaServico());
 
 			return "criar";
 		} catch (Exception e) {
@@ -194,16 +220,16 @@ public class CelularController {
 	 * 
 	 * @return
 	 */
-	public String adicionar() {
+/*	public String adicionar() {
 		try {
 
-			TelefoneBean novo = new TelefoneBean();
-			novo.setClTipo(telefoneBean.getClTipo());
-			novo.setDsNumero(telefoneBean.getDsNumero());
+			ServicoBean novo = new ServicoBean();
+			novo.set(servicoBean.getClTipo());
+			novo.setDsNumero(servicoBean.getDsNumero());
 
 			celularBean.getListaTelefone().add(novo);
 
-			telefoneBean = new TelefoneBean();
+			servicoBean = new ServicoBean();
 
 			return "criar";
 		} catch (Exception e) {
@@ -212,22 +238,22 @@ public class CelularController {
 			return "falha";
 		}
 	}
-
+*/
 	/**
 	 * Adiciona um telefone de uma pessoa
 	 * 
 	 * @return
 	 */
-	public String adicionarEditar() {
+/*	public String adicionarEditar() {
 		try {
 
-			TelefoneBean novo = new TelefoneBean();
-			novo.setClTipo(telefoneBean.getClTipo());
-			novo.setDsNumero(telefoneBean.getDsNumero());
+			ServicoBean novo = new ServicoBean();
+			novo.setClTipo(servicoBean.getClTipo());
+			novo.setDsNumero(servicoBean.getDsNumero());
 
 			celularBean.getListaTelefone().add(novo);
 
-			telefoneBean = new TelefoneBean();
+			servicoBean = new ServicoBean();
 
 			return "editar";
 		} catch (Exception e) {
@@ -236,7 +262,7 @@ public class CelularController {
 			return "falha";
 		}
 	}
-
+*/
 	/**
 	 * Remove um telefone da lista de uma pessoa
 	 * 
@@ -247,7 +273,7 @@ public class CelularController {
 
 			HtmlDataTable telefones = (HtmlDataTable) this.getFacesContext().getViewRoot()
 					.findComponent("formulario:telefones");
-			celularBean.getListaTelefone().remove(celularBean.getListaTelefone().indexOf(telefones.getRowData()));
+			celularBean.getListaServico().remove(celularBean.getListaServico().indexOf(telefones.getRowData()));
 
 			return null;
 		} catch (Exception e) {
@@ -267,18 +293,18 @@ public class CelularController {
 	public String excluir() {
 		try {
 
-			HtmlInputHidden idPessoa = (HtmlInputHidden) this.getFacesContext().getViewRoot()
-					.findComponent("formulario:idPessoa");
+			HtmlInputHidden id_cel = (HtmlInputHidden) this.getFacesContext().getViewRoot()
+					.findComponent("formulario:id_cel");
 
-			Pessoa pessoa = getPessoaService().consultar((Integer) idPessoa.getValue());
+			Celular celular = getCelularService().consultar((Integer) id_cel.getValue());
 
-			if (pessoa == null || pessoa.getIdPessoa() == null) {
+			if (id_cel == null || celular.getId_cel() == null) {
 				FacesMessage message = new FacesMessage("Nenhum registro encontrado.");
 				this.getFacesContext().addMessage("formulario", message);
 				return "listar";
 			}
 
-			getPessoaService().excluir(pessoa.getIdPessoa());
+			getCelularService().excluir(celular.getId_cel());
 
 			return "sucesso";
 		} catch (Exception e) {
@@ -299,30 +325,32 @@ public class CelularController {
 	public String alterar() {
 		try {
 
-			Pessoa pessoa = getPessoaService().consultar(celularBean.getIdPessoa());
+			Celular celular = getCelularService().consultar(celularBean.getId_cel());
 
-			if (pessoa == null || pessoa.getIdPessoa() == null) {
+			if (celular == null || celular.getId_cel() == null) {
 				FacesMessage message = new FacesMessage("Nenhum registro encontrado.");
 				this.getFacesContext().addMessage("formulario", message);
 				return "listar";
 			}
 
 			// preenche os dados da tela no objeto persistente
-			pessoa.setDsNome(celularBean.getDsNome());
-			pessoa.setVlIdade(celularBean.getVlIdade().toString());
+			celular.setNome(celularBean.getNome());
+			celular.setMarca(celularBean.getMarca());
 
 			// preeche a lista de telefones da tela na lista de telefones persistente
-			pessoa.setListaTelefone(new ArrayList<Telefone>());
-			for (TelefoneBean telefoneBean : celularBean.getListaTelefone()) {
-				Telefone telefone = new Telefone();
-				telefone.setIdTelefone(telefoneBean.getIdTelefone() == 0 ? null : telefoneBean.getIdTelefone());
-				telefone.setClTipo(telefoneBean.getClTipo());
-				telefone.setDsNumero(telefoneBean.getDsNumero());
-				telefone.setPessoa(pessoa);
-				pessoa.getListaTelefone().add(telefone);
+			celular.setListaServico(new ArrayList<Servico>());
+			for (ServicoBean servicoBean : celularBean.getListaServico()) {
+				Servico servico = new Servico();
+				servico.setIdservico(servicoBean.getIdservico() == 0 ? null : servicoBean.getIdservico());
+				servico.setDescricao(servicoBean.getDescricao());
+				servico.setDtabertura(servicoBean.getDtabertura());
+				servico.setDtentrega(servicoBean.getDtentrega());
+				
+				servico.setCelular(celular);
+				celular.getListaServico().add(servico);
 			}
 
-			getPessoaService().alterar(pessoa);
+			getCelularService().alterar(celular);
 			return "sucesso";
 
 		} catch (Exception e) {
@@ -334,12 +362,12 @@ public class CelularController {
 		}
 	}
 
-	public PessoaService getPessoaService() {
-		return pessoaService;
+	public CelularService getCelularService() {
+		return celularService;
 	}
 
-	public void setPessoaService(PessoaService pessoaService) {
-		this.pessoaService = pessoaService;
+	public void setCelularService(CelularService celularService) {
+		this.celularService = celularService;
 	}
 
 	private FacesContext getFacesContext() {
@@ -370,12 +398,12 @@ public class CelularController {
 		this.listaCelularBean = listaCelularBean;
 	}
 
-	public TelefoneBean getTelefoneBean() {
-		return telefoneBean;
+	public ServicoBean getServicoBean() {
+		return servicoBean;
 	}
 
-	public void setTelefoneBean(TelefoneBean telefoneBean) {
-		this.telefoneBean = telefoneBean;
+	public void setServicoBean(ServicoBean servicoBean) {
+		this.servicoBean = servicoBean;
 	}
 
 }
